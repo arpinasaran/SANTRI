@@ -1,0 +1,19 @@
+<Solution>
+  <Configurations>
+    <Platform Name="Any CPU" />
+    <Platform Name="x64" />
+  </Configurations>
+  <Project Path="SANTRI.Client/SANTRI.Client.csproj" Id="8acfce03-f37a-43ef-b556-a449c54e161d">
+    <Platform Solution="*|x64" Project="x64" />
+  </Project>
+  <Project Path="SANTRI.Core/SANTRI.Core.csproj" Id="c5092d3f-b5ef-439b-8742-a24d24dc61e5">
+    <Platform Solution="*|x64" Project="x64" />
+  </Project>
+  <Project Path="SANTRI.Server/SANTRI.Server.csproj" Id="1d1a74c9-9276-48f1-a23c-01a924ad002e">
+    <Platform Solution="*|x64" Project="x64" />
+  </Project>
+  <Project Path="SANTRI.Setup/SANTRI.Setup.csproj" Id="422fed83-bb1a-434a-b15e-54952ac27d4d" />
+  <Project Path="SANTRI.Token/SANTRI.Token.csproj" Id="71f522a6-3cc8-444b-9fb5-ffd1f9c2bc24">
+    <Platform Solution="*|x64" Project="x64" />
+  </Project>
+</Solution>

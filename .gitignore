@@ -1,0 +1,17 @@
+# Build artifacts
+[Bb]in/
+[Oo]bj/
+.vs/
+packages/
+
+# Payload installer = salinan hasil build (digenerate ulang dari bin Release)
+SANTRI.Setup/Payloads/
+
+# Konten video display (40MB+, dikelola manual di luar git)
+SANTRI.Server/Videos/*.mp4
+
+# User-specific
+*.csproj.user
+*.suo
+lokal_tiket.txt
+Config.txt
