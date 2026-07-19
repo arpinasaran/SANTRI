@@ -1,0 +1,74 @@
+<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        x:Class="SANTRI.Server.Mac.MainWindow"
+        Title="SANTRI.Server (Mac Preview)"
+        Width="1280" Height="720" WindowStartupLocation="CenterScreen">
+  <Window.Background>
+    <ImageBrush Source="avares://SANTRI.Server.Mac/Assets/rsuwk_new.png" Stretch="UniformToFill" Opacity="0.5"/>
+  </Window.Background>
+  <Grid>
+    <Grid.RowDefinitions>
+      <RowDefinition Height="100"/>
+      <RowDefinition Height="*"/>
+      <RowDefinition Height="42"/>
+    </Grid.RowDefinitions>
+
+    <Grid.ColumnDefinitions>
+      <ColumnDefinition Width="2.5*"/>
+      <ColumnDefinition Width="3*"/>
+      <ColumnDefinition Width="3*"/>
+    </Grid.ColumnDefinitions>
+
+    <Border Grid.Row="0" Background="#99000000" Grid.ColumnSpan="3">
+      <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+        <Image Source="avares://SANTRI.Server.Mac/Assets/logo.png" Margin="30,10"/>
+        <Grid VerticalAlignment="Center">
+          <TextBlock Text="RSU Wijayakusuma Kebumen" Foreground="Green" FontSize="46" FontWeight="Bold" HorizontalAlignment="Center"/>
+        </Grid>
+      </StackPanel>
+    </Border>
+
+    <Grid Grid.Row="1" Grid.Column="0" Margin="0" Background="#E5097700">
+      <Grid.RowDefinitions>
+        <RowDefinition/>
+        <RowDefinition/>
+        <RowDefinition/>
+        <RowDefinition Height="60"/>
+      </Grid.RowDefinitions>
+
+      <Border Grid.Row="0" BorderBrush="White" BorderThickness="1" CornerRadius="6" Margin="30,10,30,10">
+        <StackPanel VerticalAlignment="Center">
+          <TextBlock Text="Loket 1" FontSize="28" Foreground="White" HorizontalAlignment="Center"/>
+          <TextBlock x:Name="lblLoket1Count" Text="000" FontSize="64" FontWeight="Bold" Foreground="Orange" HorizontalAlignment="Center"/>
+        </StackPanel>
+      </Border>
+      <Border Grid.Row="1" BorderBrush="White" BorderThickness="1" CornerRadius="6" Margin="30,0,30,10">
+        <StackPanel VerticalAlignment="Center">
+          <TextBlock Text="Loket 2" FontSize="28" Foreground="White" HorizontalAlignment="Center"/>
+          <TextBlock x:Name="lblLoket2Count" Text="000" FontSize="64" FontWeight="Bold" Foreground="Orange" HorizontalAlignment="Center"/>
+        </StackPanel>
+      </Border>
+      <Border Grid.Row="2" BorderBrush="White" BorderThickness="1" CornerRadius="6" Margin="30,0,30,10">
+        <StackPanel VerticalAlignment="Center">
+          <TextBlock Text="Loket 3" FontSize="28" Foreground="White" HorizontalAlignment="Center"/>
+          <TextBlock x:Name="lblLoket3Count" Text="000" FontSize="64" FontWeight="Bold" Foreground="Orange" HorizontalAlignment="Center"/>
+        </StackPanel>
+      </Border>
+
+      <StackPanel Grid.Row="3" Orientation="Horizontal" HorizontalAlignment="Center">
+        <TextBlock Text="Sisa Antrean: " FontSize="24" VerticalAlignment="Center" Foreground="White"/>
+        <TextBlock x:Name="lblLoketSisa" Text="0" FontSize="32" FontWeight="Bold" Foreground="White"/>
+      </StackPanel>
+    </Grid>
+
+    <Grid Grid.Row="1" Grid.Column="1" Grid.ColumnSpan="2" Background="#B2C0C0C0" Margin="100,70">
+      <TextBlock Text="[ Area Video Playlist — dinonaktifkan di Mac Preview ]"
+                 FontSize="20" Foreground="DimGray"
+                 HorizontalAlignment="Center" VerticalAlignment="Center"/>
+    </Grid>
+
+    <Canvas Grid.Row="2" Grid.ColumnSpan="3" Background="DarkGreen" ClipToBounds="True">
+      <TextBlock x:Name="lblMarque" Text="Selamat datang di RSU Wijayakusuma Kebumen. Jl. Gelatik 1 Panjer Kebumen 54312 Jawa Tengah Telp. (0287) 381954." Foreground="LightGray" FontSize="24" Canvas.Top="4" Canvas.Left="1200"/>
+    </Canvas>
+  </Grid>
+</Window>
