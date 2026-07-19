@@ -27,12 +27,12 @@
     <Grid x:Name="PanelUtama" Grid.Row="1" IsVisible="True">
       <StackPanel VerticalAlignment="Center" HorizontalAlignment="Center">
 
-        <TextBlock Text="Silakan Ambil Nomor Antrean Anda" Foreground="White" FontSize="26" FontWeight="Bold" HorizontalAlignment="Center" Margin="0,0,0,25"/>
+        <TextBlock Text="Silakan Pilih Jenis Antrean Anda" Foreground="White" FontSize="26" FontWeight="Bold" HorizontalAlignment="Center" Margin="0,0,0,25"/>
 
-        <Button x:Name="btnAmbilAntrean"
-                FontSize="40" FontWeight="Bold" Foreground="White"
-                Width="480" Height="200" HorizontalAlignment="Center"
-                CornerRadius="30" Click="btnAmbilAntrean_Click"
+        <Button x:Name="btnAmbilUmum"
+                FontSize="26" FontWeight="Bold" Foreground="White"
+                Width="480" Height="90" HorizontalAlignment="Center" Margin="0,0,0,15"
+                CornerRadius="20" Click="btnAmbilUmum_Click"
                 HorizontalContentAlignment="Center" VerticalContentAlignment="Center">
           <Button.Background>
             <LinearGradientBrush StartPoint="50%,0%" EndPoint="50%,100%">
@@ -40,13 +40,41 @@
               <GradientStop Color="#FF0C4001" Offset="1"/>
             </LinearGradientBrush>
           </Button.Background>
-          <TextBlock Text="AMBIL NOMOR ANTREAN" TextWrapping="Wrap" VerticalAlignment="Center" TextAlignment="Center"/>
+          <TextBlock Text="A — UMUM" TextWrapping="Wrap" VerticalAlignment="Center" TextAlignment="Center"/>
         </Button>
 
-        <Border Background="#CC000000" CornerRadius="15" Padding="25,10" HorizontalAlignment="Center" Margin="0,40,0,0">
+        <Button x:Name="btnAmbilJKN"
+                FontSize="26" FontWeight="Bold" Foreground="White"
+                Width="480" Height="90" HorizontalAlignment="Center" Margin="0,0,0,15"
+                CornerRadius="20" Click="btnAmbilJKN_Click"
+                HorizontalContentAlignment="Center" VerticalContentAlignment="Center">
+          <Button.Background>
+            <LinearGradientBrush StartPoint="50%,0%" EndPoint="50%,100%">
+              <GradientStop Color="#FF26A9FF"/>
+              <GradientStop Color="#FF013F66" Offset="1"/>
+            </LinearGradientBrush>
+          </Button.Background>
+          <TextBlock Text="B — ONLINE JKN (BPJS)" TextWrapping="Wrap" VerticalAlignment="Center" TextAlignment="Center"/>
+        </Button>
+
+        <Button x:Name="btnAmbilHelp"
+                FontSize="26" FontWeight="Bold" Foreground="White"
+                Width="480" Height="90" HorizontalAlignment="Center"
+                CornerRadius="20" Click="btnAmbilHelp_Click"
+                HorizontalContentAlignment="Center" VerticalContentAlignment="Center">
+          <Button.Background>
+            <LinearGradientBrush StartPoint="50%,0%" EndPoint="50%,100%">
+              <GradientStop Color="#FFFFB326"/>
+              <GradientStop Color="#FF804F01" Offset="1"/>
+            </LinearGradientBrush>
+          </Button.Background>
+          <TextBlock Text="C — HELPDESK" TextWrapping="Wrap" VerticalAlignment="Center" TextAlignment="Center"/>
+        </Button>
+
+        <Border Background="#CC000000" CornerRadius="15" Padding="25,10" HorizontalAlignment="Center" Margin="0,30,0,0">
           <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
-            <TextBlock Text="Total Antrean Hari Ini:" Foreground="White" FontSize="22" VerticalAlignment="Center"/>
-            <TextBlock x:Name="lblTotalAntrean" Text="000" Foreground="Yellow" FontSize="32" FontWeight="Bold" VerticalAlignment="Center" Margin="15,0,0,0"/>
+            <TextBlock Text="Total Hari Ini:" Foreground="White" FontSize="22" VerticalAlignment="Center"/>
+            <TextBlock x:Name="lblTotalAntrean" Text="A 000 · B 000 · C 000" Foreground="Yellow" FontSize="26" FontWeight="Bold" VerticalAlignment="Center" Margin="15,0,0,0"/>
           </StackPanel>
         </Border>
 
@@ -56,8 +84,8 @@
     <Grid x:Name="PanelHasil" Grid.Row="1" Background="Transparent" IsVisible="False" Margin="100">
       <Border BorderBrush="DarkGreen" BorderThickness="5" CornerRadius="20" Background="White">
         <StackPanel VerticalAlignment="Center" HorizontalAlignment="Center">
-          <TextBlock Text="Nomor Antrean Anda:" FontSize="28" Foreground="Gray" HorizontalAlignment="Center"/>
-          <TextBlock x:Name="lblNomorCetak" Text="000" FontSize="110" FontWeight="Bold" Foreground="Black" HorizontalAlignment="Center"/>
+          <TextBlock x:Name="lblJenisCetak" Text="Nomor Antrean Anda:" FontSize="28" Foreground="Gray" HorizontalAlignment="Center"/>
+          <TextBlock x:Name="lblNomorCetak" Text="A-000" FontSize="110" FontWeight="Bold" Foreground="Black" HorizontalAlignment="Center"/>
           <TextBlock Text="Mohon tunggu, tiket sedang dicetak..." FontSize="20" Foreground="Blue" HorizontalAlignment="Center" Margin="0,10"/>
         </StackPanel>
       </Border>

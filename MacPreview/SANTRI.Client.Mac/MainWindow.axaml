@@ -1,7 +1,7 @@
 <Window xmlns="https://github.com/avaloniaui"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         x:Class="SANTRI.Client.Mac.MainWindow"
-        Title="SANTRI.Client (Mac Preview)" Height="450" Width="500"
+        Title="SANTRI.Client (Mac Preview)" Height="560" Width="500"
         WindowStartupLocation="CenterScreen">
   <Window.Background>
     <ImageBrush Source="avares://SANTRI.Client.Mac/Assets/rsuwk_new.png" Stretch="UniformToFill" Opacity="0.5"/>
@@ -10,7 +10,8 @@
     <Grid.RowDefinitions>
       <RowDefinition Height="60"/>
       <RowDefinition Height="*"/>
-      <RowDefinition Height="100"/>
+      <RowDefinition Height="200"/>
+      <RowDefinition Height="60"/>
       <RowDefinition Height="30"/>
     </Grid.RowDefinitions>
 
@@ -20,53 +21,79 @@
       </Grid>
     </Border>
 
-    <Border Grid.Row="1" Background="#CCFFFFFF" CornerRadius="15" Padding="50,0" Margin="20" HorizontalAlignment="Center">
+    <Border Grid.Row="1" Background="#CCFFFFFF" CornerRadius="15" Padding="50,0" Margin="20,10" HorizontalAlignment="Center">
       <StackPanel VerticalAlignment="Center" HorizontalAlignment="Center">
         <TextBlock Text="Sedang Melayani:" FontSize="16" Foreground="Black" HorizontalAlignment="Center"/>
-        <TextBlock x:Name="lblCurrentCall" Text="000" FontSize="72" FontWeight="Bold" Foreground="DarkGreen" HorizontalAlignment="Center" Margin="0,5"/>
-
-        <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Margin="0,10,0,0">
-          <TextBlock Text="Sisa Antrean Menunggu: " FontSize="14" Foreground="Black" VerticalAlignment="Center"/>
-          <TextBlock x:Name="lblSisa" Text="0" FontSize="16" FontWeight="Bold" Foreground="Red"/>
-        </StackPanel>
+        <TextBlock x:Name="lblCurrentCall" Text="---" FontSize="64" FontWeight="Bold" Foreground="DarkGreen" HorizontalAlignment="Center" Margin="0,5"/>
       </StackPanel>
     </Border>
 
-    <Grid Grid.Row="2" Margin="10,10">
-      <Grid.ColumnDefinitions>
-        <ColumnDefinition Width="*"/>
-        <ColumnDefinition Width="10"/>
-        <ColumnDefinition Width="*"/>
-      </Grid.ColumnDefinitions>
+    <!-- Satu baris per jenis antrean: label + sisa + tombol panggil -->
+    <Grid Grid.Row="2" Margin="15,0" RowDefinitions="*,8,*,8,*">
 
-      <Button x:Name="btnCall" Grid.Column="0" FontSize="16" FontWeight="Bold" Foreground="DarkSlateGray"
-              HorizontalAlignment="Stretch" VerticalAlignment="Stretch"
-              HorizontalContentAlignment="Center" VerticalContentAlignment="Center"
-              CornerRadius="10" Click="btnCall_Click">
-        <TextBlock Text="PANGGIL SELANJUTNYA" TextWrapping="Wrap" TextAlignment="Center"/>
-        <Button.Background>
-          <LinearGradientBrush StartPoint="50%,0%" EndPoint="50%,100%">
-            <GradientStop Color="#FF00FF1B"/>
-            <GradientStop Color="#FF10841C" Offset="1"/>
-          </LinearGradientBrush>
-        </Button.Background>
-      </Button>
+      <Grid Grid.Row="0" ColumnDefinitions="*,130">
+        <Border Grid.Column="0" Background="#CCFFFFFF" CornerRadius="10" Padding="15,0" Margin="0,0,8,0">
+          <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+            <TextBlock Text="A — Umum" FontSize="16" FontWeight="Bold" Foreground="DarkGreen" VerticalAlignment="Center" Width="170"/>
+            <TextBlock Text="Sisa: " FontSize="14" Foreground="Black" VerticalAlignment="Center"/>
+            <TextBlock x:Name="lblSisaUmum" Text="0" FontSize="18" FontWeight="Bold" Foreground="Red" VerticalAlignment="Center"/>
+          </StackPanel>
+        </Border>
+        <Button x:Name="btnCallUmum" Grid.Column="1" FontSize="14" FontWeight="Bold" Foreground="White"
+                HorizontalAlignment="Stretch" VerticalAlignment="Stretch"
+                HorizontalContentAlignment="Center" VerticalContentAlignment="Center"
+                CornerRadius="10" Background="#FF10841C" Click="btnCallUmum_Click">
+          <TextBlock Text="PANGGIL" TextAlignment="Center"/>
+        </Button>
+      </Grid>
 
-      <Button x:Name="btnRecall" Grid.Column="2" FontSize="16" FontWeight="Bold" Foreground="DarkSlateGray"
-              HorizontalAlignment="Stretch" VerticalAlignment="Stretch"
-              HorizontalContentAlignment="Center" VerticalContentAlignment="Center"
-              CornerRadius="10" Click="btnRecall_Click">
-        <TextBlock Text="PANGGIL ULANG" TextWrapping="Wrap" TextAlignment="Center"/>
-        <Button.Background>
-          <LinearGradientBrush StartPoint="50%,0%" EndPoint="50%,100%">
-            <GradientStop Color="#FFE49C00"/>
-            <GradientStop Color="#FF9E6C00" Offset="1"/>
-          </LinearGradientBrush>
-        </Button.Background>
-      </Button>
+      <Grid Grid.Row="2" ColumnDefinitions="*,130">
+        <Border Grid.Column="0" Background="#CCFFFFFF" CornerRadius="10" Padding="15,0" Margin="0,0,8,0">
+          <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+            <TextBlock Text="B — Online JKN" FontSize="16" FontWeight="Bold" Foreground="DarkBlue" VerticalAlignment="Center" Width="170"/>
+            <TextBlock Text="Sisa: " FontSize="14" Foreground="Black" VerticalAlignment="Center"/>
+            <TextBlock x:Name="lblSisaJKN" Text="0" FontSize="18" FontWeight="Bold" Foreground="Red" VerticalAlignment="Center"/>
+          </StackPanel>
+        </Border>
+        <Button x:Name="btnCallJKN" Grid.Column="1" FontSize="14" FontWeight="Bold" Foreground="White"
+                HorizontalAlignment="Stretch" VerticalAlignment="Stretch"
+                HorizontalContentAlignment="Center" VerticalContentAlignment="Center"
+                CornerRadius="10" Background="#FF01568C" Click="btnCallJKN_Click">
+          <TextBlock Text="PANGGIL" TextAlignment="Center"/>
+        </Button>
+      </Grid>
+
+      <Grid Grid.Row="4" ColumnDefinitions="*,130">
+        <Border Grid.Column="0" Background="#CCFFFFFF" CornerRadius="10" Padding="15,0" Margin="0,0,8,0">
+          <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+            <TextBlock Text="C — Helpdesk" FontSize="16" FontWeight="Bold" Foreground="#FF804F01" VerticalAlignment="Center" Width="170"/>
+            <TextBlock Text="Sisa: " FontSize="14" Foreground="Black" VerticalAlignment="Center"/>
+            <TextBlock x:Name="lblSisaHelp" Text="0" FontSize="18" FontWeight="Bold" Foreground="Red" VerticalAlignment="Center"/>
+          </StackPanel>
+        </Border>
+        <Button x:Name="btnCallHelp" Grid.Column="1" FontSize="14" FontWeight="Bold" Foreground="White"
+                HorizontalAlignment="Stretch" VerticalAlignment="Stretch"
+                HorizontalContentAlignment="Center" VerticalContentAlignment="Center"
+                CornerRadius="10" Background="#FF9E6C00" Click="btnCallHelp_Click">
+          <TextBlock Text="PANGGIL" TextAlignment="Center"/>
+        </Button>
+      </Grid>
     </Grid>
 
-    <Border Grid.Row="3" Background="DarkSlateGray">
+    <Button x:Name="btnRecall" Grid.Row="3" FontSize="16" FontWeight="Bold" Foreground="DarkSlateGray"
+            Margin="15,8" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"
+            HorizontalContentAlignment="Center" VerticalContentAlignment="Center"
+            CornerRadius="10" Click="btnRecall_Click">
+      <TextBlock Text="PANGGIL ULANG" TextWrapping="Wrap" TextAlignment="Center"/>
+      <Button.Background>
+        <LinearGradientBrush StartPoint="50%,0%" EndPoint="50%,100%">
+          <GradientStop Color="#FFE49C00"/>
+          <GradientStop Color="#FF9E6C00" Offset="1"/>
+        </LinearGradientBrush>
+      </Button.Background>
+    </Button>
+
+    <Border Grid.Row="4" Background="DarkSlateGray">
       <TextBlock x:Name="lblStatus" Text="Menghubungkan ke server..." Foreground="LightGreen" FontSize="12" VerticalAlignment="Center" Margin="10,0"/>
     </Border>
   </Grid>

@@ -39,25 +39,25 @@
       <Border Grid.Row="0" BorderBrush="White" BorderThickness="1" CornerRadius="6" Margin="30,10,30,10">
         <StackPanel VerticalAlignment="Center">
           <TextBlock Text="Loket 1" FontSize="28" Foreground="White" HorizontalAlignment="Center"/>
-          <TextBlock x:Name="lblLoket1Count" Text="000" FontSize="64" FontWeight="Bold" Foreground="Orange" HorizontalAlignment="Center"/>
+          <TextBlock x:Name="lblLoket1Count" Text="---" FontSize="64" FontWeight="Bold" Foreground="Orange" HorizontalAlignment="Center"/>
         </StackPanel>
       </Border>
       <Border Grid.Row="1" BorderBrush="White" BorderThickness="1" CornerRadius="6" Margin="30,0,30,10">
         <StackPanel VerticalAlignment="Center">
           <TextBlock Text="Loket 2" FontSize="28" Foreground="White" HorizontalAlignment="Center"/>
-          <TextBlock x:Name="lblLoket2Count" Text="000" FontSize="64" FontWeight="Bold" Foreground="Orange" HorizontalAlignment="Center"/>
+          <TextBlock x:Name="lblLoket2Count" Text="---" FontSize="64" FontWeight="Bold" Foreground="Orange" HorizontalAlignment="Center"/>
         </StackPanel>
       </Border>
       <Border Grid.Row="2" BorderBrush="White" BorderThickness="1" CornerRadius="6" Margin="30,0,30,10">
         <StackPanel VerticalAlignment="Center">
           <TextBlock Text="Loket 3" FontSize="28" Foreground="White" HorizontalAlignment="Center"/>
-          <TextBlock x:Name="lblLoket3Count" Text="000" FontSize="64" FontWeight="Bold" Foreground="Orange" HorizontalAlignment="Center"/>
+          <TextBlock x:Name="lblLoket3Count" Text="---" FontSize="64" FontWeight="Bold" Foreground="Orange" HorizontalAlignment="Center"/>
         </StackPanel>
       </Border>
 
       <StackPanel Grid.Row="3" Orientation="Horizontal" HorizontalAlignment="Center">
-        <TextBlock Text="Sisa Antrean: " FontSize="24" VerticalAlignment="Center" Foreground="White"/>
-        <TextBlock x:Name="lblLoketSisa" Text="0" FontSize="32" FontWeight="Bold" Foreground="White"/>
+        <TextBlock Text="Sisa: " FontSize="24" VerticalAlignment="Center" Foreground="White"/>
+        <TextBlock x:Name="lblLoketSisa" Text="A 0 · B 0 · C 0" FontSize="28" FontWeight="Bold" Foreground="White" VerticalAlignment="Center"/>
       </StackPanel>
     </Grid>
 

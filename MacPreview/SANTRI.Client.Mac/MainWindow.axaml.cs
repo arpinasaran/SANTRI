@@ -52,35 +52,47 @@ namespace SANTRI.Client.Mac
         {
             try
             {
-                int sisa = await _redisManager.GetSisaCountAsync();
+                int sisaUmum = await _redisManager.GetSisaCountAsync(JenisAntrean.Umum);
+                int sisaJKN = await _redisManager.GetSisaCountAsync(JenisAntrean.OnlineJKN);
+                int sisaHelp = await _redisManager.GetSisaCountAsync(JenisAntrean.Helpdesk);
+
                 long myCurrentNumber = await _redisManager.GetLoketNumberAsync(_myLoketId);
+                string myCurrentJenis = await _redisManager.GetLoketJenisAsync(_myLoketId);
 
-                lblSisa.Text = sisa.ToString();
-                lblCurrentCall.Text = myCurrentNumber == 0 ? "000" : myCurrentNumber.ToString("D3");
+                lblSisaUmum.Text = sisaUmum.ToString();
+                lblSisaJKN.Text = sisaJKN.ToString();
+                lblSisaHelp.Text = sisaHelp.ToString();
+                lblCurrentCall.Text = myCurrentNumber == 0 ? "---" : JenisAntrean.Format(myCurrentJenis, myCurrentNumber);
 
-                btnCall.IsEnabled = sisa > 0;
+                btnCallUmum.IsEnabled = sisaUmum > 0;
+                btnCallJKN.IsEnabled = sisaJKN > 0;
+                btnCallHelp.IsEnabled = sisaHelp > 0;
                 btnRecall.IsEnabled = myCurrentNumber > 0;
             }
             catch { }
         }
 
-        private async void btnCall_Click(object sender, RoutedEventArgs e)
+        private void btnCallUmum_Click(object sender, RoutedEventArgs e) => _ = PanggilAsync(JenisAntrean.Umum, btnCallUmum);
+        private void btnCallJKN_Click(object sender, RoutedEventArgs e) => _ = PanggilAsync(JenisAntrean.OnlineJKN, btnCallJKN);
+        private void btnCallHelp_Click(object sender, RoutedEventArgs e) => _ = PanggilAsync(JenisAntrean.Helpdesk, btnCallHelp);
+
+        private async Task PanggilAsync(string jenis, Button tombol)
         {
-            btnCall.IsEnabled = false;
+            tombol.IsEnabled = false;
 
             try
             {
-                int sisaSaatIni = await _redisManager.GetSisaCountAsync();
+                int sisaSaatIni = await _redisManager.GetSisaCountAsync(jenis);
                 if (sisaSaatIni <= 0) return;
 
-                long nextNumber = await _redisManager.IncrementActiveCountAsync();
+                long nextNumber = await _redisManager.IncrementActiveCountAsync(jenis);
 
                 await _redisManager.SetLoketNumberAsync(_myLoketId, nextNumber);
+                await _redisManager.SetLoketJenisAsync(_myLoketId, jenis);
                 int sisaBaru = sisaSaatIni - 1;
-                await _redisManager.SetSisaCountAsync(sisaBaru);
+                await _redisManager.SetSisaCountAsync(jenis, sisaBaru);
 
-                lblSisa.Text = sisaBaru.ToString();
-                lblCurrentCall.Text = nextNumber.ToString("D3");
+                lblCurrentCall.Text = JenisAntrean.Format(jenis, nextNumber);
 
                 await _redisManager.PublishCommandAsync($"{_myLoketId}:CALL");
             }
@@ -91,7 +103,7 @@ namespace SANTRI.Client.Mac
             finally
             {
                 await Task.Delay(1000);
-                btnCall.IsEnabled = true;
+                tombol.IsEnabled = true;
             }
         }
 

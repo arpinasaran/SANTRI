@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Threading.Tasks;
 using Avalonia.Controls;
@@ -19,9 +20,16 @@ namespace SANTRI.Token.Mac
         private DispatcherTimer _syncTimer;
 
         private string _tiketYangDicetak = "";
+        private string _jenisYangDicetak = JenisAntrean.Umum;
         private const string ADMIN_PASSWORD = "admin";
 
-        private long _localTotal = 0;
+        // Counter offline per jenis antrean
+        private Dictionary<string, long> _localTotals = new Dictionary<string, long>
+        {
+            { JenisAntrean.Umum, 0 },
+            { JenisAntrean.OnlineJKN, 0 },
+            { JenisAntrean.Helpdesk, 0 }
+        };
         private string _localFilePath = "lokal_tiket.txt";
         private bool _needsSync = false;
 
@@ -43,7 +51,7 @@ namespace SANTRI.Token.Mac
                 _resetTimer.Stop();
                 PanelHasil.IsVisible = false;
                 PanelUtama.IsVisible = true;
-                btnAmbilAntrean.IsEnabled = true;
+                SetTombolEnabled(true);
             };
 
             _syncTimer = new DispatcherTimer { Interval = TimeSpan.FromSeconds(5) };
@@ -53,8 +61,7 @@ namespace SANTRI.Token.Mac
                 if (_runningDate != today)
                 {
                     _runningDate = today;
-                    _localTotal = 0;
-                    lblTotalAntrean.Text = "000";
+                    ResetLocalTotals();
                     SaveLocalState();
                     _triggerAutoResetOnConnect = true;
                 }
@@ -75,17 +82,23 @@ namespace SANTRI.Token.Mac
             _ = AttemptSyncAsync();
         }
 
-        private async void btnAmbilAntrean_Click(object sender, RoutedEventArgs e)
-        {
-            btnAmbilAntrean.IsEnabled = false;
+        private void btnAmbilUmum_Click(object sender, RoutedEventArgs e) => _ = AmbilAntreanAsync(JenisAntrean.Umum);
+        private void btnAmbilJKN_Click(object sender, RoutedEventArgs e) => _ = AmbilAntreanAsync(JenisAntrean.OnlineJKN);
+        private void btnAmbilHelp_Click(object sender, RoutedEventArgs e) => _ = AmbilAntreanAsync(JenisAntrean.Helpdesk);
 
-            _localTotal++;
+        private async Task AmbilAntreanAsync(string jenis)
+        {
+            SetTombolEnabled(false);
+
+            _localTotals[jenis]++;
             SaveLocalState();
 
-            _tiketYangDicetak = _localTotal.ToString("D3");
+            _jenisYangDicetak = jenis;
+            _tiketYangDicetak = JenisAntrean.Format(jenis, _localTotals[jenis]);
 
+            lblJenisCetak.Text = $"Antrian {JenisAntrean.Label(jenis)} — Nomor Anda:";
             lblNomorCetak.Text = _tiketYangDicetak;
-            lblTotalAntrean.Text = _tiketYangDicetak;
+            UpdateTotalLabel();
 
             PanelUtama.IsVisible = false;
             PanelHasil.IsVisible = true;
@@ -96,6 +109,27 @@ namespace SANTRI.Token.Mac
             await AttemptSyncAsync();
 
             _resetTimer.Start();
+        }
+
+        private void SetTombolEnabled(bool enabled)
+        {
+            btnAmbilUmum.IsEnabled = enabled;
+            btnAmbilJKN.IsEnabled = enabled;
+            btnAmbilHelp.IsEnabled = enabled;
+        }
+
+        private void UpdateTotalLabel()
+        {
+            lblTotalAntrean.Text =
+                $"A {_localTotals[JenisAntrean.Umum]:D3} · " +
+                $"B {_localTotals[JenisAntrean.OnlineJKN]:D3} · " +
+                $"C {_localTotals[JenisAntrean.Helpdesk]:D3}";
+        }
+
+        private void ResetLocalTotals()
+        {
+            foreach (string jenis in JenisAntrean.Semua) _localTotals[jenis] = 0;
+            UpdateTotalLabel();
         }
 
         private async Task AttemptSyncAsync()
@@ -117,11 +151,14 @@ namespace SANTRI.Token.Mac
                 {
                     try
                     {
-                        await _redisManager.SetTotalCountAsync(_localTotal);
+                        foreach (string jenis in JenisAntrean.Semua)
+                        {
+                            await _redisManager.SetTotalCountAsync(jenis, _localTotals[jenis]);
 
-                        long tiketAktif = await _redisManager.GetActiveCountAsync();
-                        int sisa = (int)(_localTotal - tiketAktif);
-                        await _redisManager.SetSisaCountAsync(Math.Max(0, sisa));
+                            long tiketAktif = await _redisManager.GetActiveCountAsync(jenis);
+                            int sisa = (int)(_localTotals[jenis] - tiketAktif);
+                            await _redisManager.SetSisaCountAsync(jenis, Math.Max(0, sisa));
+                        }
 
                         await _redisManager.PublishCommandAsync("1:NEW_TICKET");
                         _needsSync = false;
@@ -138,7 +175,7 @@ namespace SANTRI.Token.Mac
         private void CetakTiket()
         {
             // Preview Mac: cetak thermal 58mm disimulasikan.
-            lblStatus.Text = $"[SIMULASI CETAK] Tiket {_tiketYangDicetak} — RSU WIJAYAKUSUMA KEBUMEN, Antrian Pendaftaran, {DateTime.Now:dd/MM/yyyy HH:mm:ss}";
+            lblStatus.Text = $"[SIMULASI CETAK] Tiket {_tiketYangDicetak} (Antrian {JenisAntrean.Label(_jenisYangDicetak)}) — RSU WIJAYAKUSUMA KEBUMEN, {DateTime.Now:dd/MM/yyyy HH:mm:ss}";
         }
 
         private void Header_PointerPressed(object sender, PointerPressedEventArgs e)
@@ -162,10 +199,8 @@ namespace SANTRI.Token.Mac
             {
                 PanelPassword.IsVisible = false;
 
-                _localTotal = 0;
+                ResetLocalTotals();
                 SaveLocalState();
-
-                lblTotalAntrean.Text = "000";
 
                 if (_redisManager.IsConnected)
                 {
@@ -183,6 +218,7 @@ namespace SANTRI.Token.Mac
             }
         }
 
+        // Format file: yyyy-MM-dd|totalUmum|totalJKN|totalHelp
         private void LoadLocalState()
         {
             try
@@ -190,29 +226,32 @@ namespace SANTRI.Token.Mac
                 if (File.Exists(_localFilePath))
                 {
                     string[] parts = File.ReadAllText(_localFilePath).Split('|');
-                    if (parts.Length == 2)
+                    if (parts.Length == 4 && parts[0] == DateTime.Now.ToString("yyyy-MM-dd"))
                     {
-                        string savedDate = parts[0];
-                        if (savedDate == DateTime.Now.ToString("yyyy-MM-dd"))
-                        {
-                            _localTotal = long.Parse(parts[1]);
-                        }
-                        else
-                        {
-                            _localTotal = 0;
-                            _triggerAutoResetOnConnect = true;
-                        }
+                        _localTotals[JenisAntrean.Umum] = long.Parse(parts[1]);
+                        _localTotals[JenisAntrean.OnlineJKN] = long.Parse(parts[2]);
+                        _localTotals[JenisAntrean.Helpdesk] = long.Parse(parts[3]);
+                    }
+                    else
+                    {
+                        // Hari telah berganti (atau format lama) — mulai dari nol
+                        _triggerAutoResetOnConnect = true;
                     }
                 }
             }
-            catch { _localTotal = 0; }
+            catch { ResetLocalTotals(); }
 
-            if (lblTotalAntrean != null) lblTotalAntrean.Text = _localTotal.ToString("D3");
+            if (lblTotalAntrean != null) UpdateTotalLabel();
         }
 
         private void SaveLocalState()
         {
-            try { File.WriteAllText(_localFilePath, $"{DateTime.Now:yyyy-MM-dd}|{_localTotal}"); } catch { }
+            try
+            {
+                File.WriteAllText(_localFilePath,
+                    $"{DateTime.Now:yyyy-MM-dd}|{_localTotals[JenisAntrean.Umum]}|{_localTotals[JenisAntrean.OnlineJKN]}|{_localTotals[JenisAntrean.Helpdesk]}");
+            }
+            catch { }
         }
     }
 }
