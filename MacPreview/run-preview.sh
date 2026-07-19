@@ -20,4 +20,14 @@ for app in Server Token Client; do
   [[ -x "$bin" ]] || /opt/homebrew/bin/dotnet build "$proj"
   (cd "$(dirname "$bin")" && nohup "./$(basename "$bin")" >/dev/null 2>&1 &)
 done
-echo "Preview jalan: Server (TV), Token (kiosk), Client (loket)."
+# Loket 2 & 3: salinan binary Client dgn Config.txt LOKET_ID berbeda
+CB="$DIR/SANTRI.Client.Mac/bin"
+for id in 2 3; do
+  if [[ ! -d "$CB/loket$id" ]]; then
+    cp -R "$CB/Debug/net10.0" "$CB/loket$id"
+    printf '=== PENGATURAN SISTEM ANTREAN ===\r\nREDIS_CONNECTION=127.0.0.1:6379\r\nLOKET_ID=%s\r\n' $id > "$CB/loket$id/Config.txt"
+  fi
+  (cd "$CB/loket$id" && nohup ./SANTRI.Client.Mac >/dev/null 2>&1 &)
+done
+
+echo "Preview jalan: Server (TV), Token (kiosk), Client loket 1-3."
