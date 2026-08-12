@@ -4,6 +4,31 @@ using System.Threading.Tasks;
 
 namespace SANTRI.Core
 {
+    // Tiga jenis antrean: tiap jenis punya penomoran sendiri mulai 001
+    public static class JenisAntrean
+    {
+        public const string Umum = "UMUM";      // huruf A
+        public const string OnlineJKN = "JKN";  // huruf B
+        public const string Helpdesk = "HELP";  // huruf C
+
+        public static readonly string[] Semua = { Umum, OnlineJKN, Helpdesk };
+
+        public static string Huruf(string jenis)
+        {
+            return jenis == Umum ? "A" : jenis == OnlineJKN ? "B" : "C";
+        }
+
+        public static string Label(string jenis)
+        {
+            return jenis == Umum ? "Umum" : jenis == OnlineJKN ? "Online JKN" : "Helpdesk";
+        }
+
+        public static string Format(string jenis, long nomor)
+        {
+            return $"{Huruf(jenis)}-{nomor:D3}";
+        }
+    }
+
     public class AntrianRedisManager
     {
         private ConnectionMultiplexer _redis;
@@ -81,7 +106,47 @@ namespace SANTRI.Core
             return val.HasValue ? (int)val : 0;
         }
 
+        // --- STATE POOL PER JENIS ANTREAN (UMUM/JKN/HELP) ---
+
+        public async Task SetTotalCountAsync(string jenis, long total)
+        {
+            await _db.StringSetAsync($"{PREFIX}TOTAL:{jenis}", total);
+        }
+
+        public async Task<long> IncrementActiveCountAsync(string jenis)
+        {
+            return await _db.StringIncrementAsync($"{PREFIX}ACTIVE:{jenis}");
+        }
+
+        public async Task<long> GetActiveCountAsync(string jenis)
+        {
+            var val = await _db.StringGetAsync($"{PREFIX}ACTIVE:{jenis}");
+            return val.HasValue ? (long)val : 0;
+        }
+
+        public async Task SetSisaCountAsync(string jenis, int sisa)
+        {
+            await _db.StringSetAsync($"{PREFIX}SISA:{jenis}", sisa);
+        }
+
+        public async Task<int> GetSisaCountAsync(string jenis)
+        {
+            var val = await _db.StringGetAsync($"{PREFIX}SISA:{jenis}");
+            return val.HasValue ? (int)val : 0;
+        }
+
         // --- LOKET SPECIFIC STATE ---
+
+        public async Task SetLoketJenisAsync(int loketId, string jenis)
+        {
+            await _db.StringSetAsync($"{PREFIX}LOKET:{loketId}:JENIS", jenis);
+        }
+
+        public async Task<string> GetLoketJenisAsync(int loketId)
+        {
+            var val = await _db.StringGetAsync($"{PREFIX}LOKET:{loketId}:JENIS");
+            return val.HasValue ? (string)val : JenisAntrean.Umum;
+        }
 
         public async Task SetLoketNumberAsync(int loketId, long number)
         {
@@ -99,9 +164,18 @@ namespace SANTRI.Core
             await _db.KeyDeleteAsync($"{PREFIX}TOTAL");
             await _db.KeyDeleteAsync($"{PREFIX}ACTIVE");
             await _db.KeyDeleteAsync($"{PREFIX}SISA");
+            foreach (string jenis in JenisAntrean.Semua)
+            {
+                await _db.KeyDeleteAsync($"{PREFIX}TOTAL:{jenis}");
+                await _db.KeyDeleteAsync($"{PREFIX}ACTIVE:{jenis}");
+                await _db.KeyDeleteAsync($"{PREFIX}SISA:{jenis}");
+            }
             await _db.KeyDeleteAsync($"{PREFIX}LOKET:1");
             await _db.KeyDeleteAsync($"{PREFIX}LOKET:2");
             await _db.KeyDeleteAsync($"{PREFIX}LOKET:3");
+            await _db.KeyDeleteAsync($"{PREFIX}LOKET:1:JENIS");
+            await _db.KeyDeleteAsync($"{PREFIX}LOKET:2:JENIS");
+            await _db.KeyDeleteAsync($"{PREFIX}LOKET:3:JENIS");
         }
     }
 }

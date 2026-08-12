@@ -14,7 +14,7 @@ sebagai pusat state & komunikasi antar-PC (pub/sub). Target produksi: **Windows*
 | `SANTRI.Setup` | Installer Windows: pasang Redis + salin aplikasi ke `C:\SANTRI` |
 | `MacPreview/` *(branch `mac-preview`)* | Port Avalonia **sementara** untuk preview GUI di macOS — bukan deliverable |
 
-## Fitur 3 Jenis Antrean (sedang dikerjakan)
+## Fitur 3 Jenis Antrean
 
 Pasien memilih jenis antrean di Token, resepsionis memilih antrean yang dipanggil:
 
@@ -22,8 +22,8 @@ Pasien memilih jenis antrean di Token, resepsionis memilih antrean yang dipanggi
 - **B — Online JKN (BPJS)**
 - **C — Helpdesk**
 
-Tiap jenis punya penomoran sendiri (format `A-012`). Implementasi & uji tampilan
-dilakukan di `MacPreview` (branch `mac-preview`) dulu, lalu di-backport ke WPF.
+Tiap jenis punya penomoran sendiri (format `A-012`). Sudah di-backport ke WPF asli
+(`SANTRI.Token/Client/Server`), status build lihat TODO di bawah.
 
 ## TODO
 
@@ -32,10 +32,12 @@ dilakukan di `MacPreview` (branch `mac-preview`) dulu, lalu di-backport ke WPF.
       Opsi: (1) minta paket rekaman asli ke vendor/sumber audio lama (kemungkinan besar
       paketnya sudah punya huruf A/B/C), atau (2) regenerate SEMUA audio dengan satu
       suara TTS konsisten (Google Cloud TTS / Azure Neural id-ID / Prosa.ai).
-- [ ] **Balikin ke Windows**: backport UI 3-jenis-antrean dari `MacPreview` ke WPF asli
-      (`SANTRI.Token/Client/Server` `MainWindow.xaml(.cs)`), verifikasi di PC Windows
-      (build + cetak thermal + audio + multi-monitor), lalu hapus folder `MacPreview/`
-      dan branch `mac-preview`. Deliverable final 100% WPF .NET Framework 4.7.2.
+- [x] **Balikin ke Windows**: backport UI 3-jenis-antrean dari `MacPreview` ke WPF asli
+      (`SANTRI.Core`, `SANTRI.Token/Client/Server` `MainWindow.xaml(.cs)`) selesai —
+      build sukses (`dotnet build`, termasuk kompilasi XAML, 0 error). **Belum
+      dicek di hardware asli**: cetak thermal, audio lewat speaker, penempatan
+      multi-monitor — perlu uji langsung di PC Windows dengan printer/TV terpasang.
+      Folder `MacPreview/` & branch `mac-preview` belum dihapus, menunggu konfirmasi.
 
 ### Backlog (nanti, disengaja belum dikerjakan)
 

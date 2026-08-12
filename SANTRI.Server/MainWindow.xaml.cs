@@ -24,6 +24,7 @@ namespace SANTRI.Server
         {
             public long TicketNumber { get; set; }
             public int LoketId { get; set; }
+            public string Jenis { get; set; }
         }
 
         private Queue<PanggilanRequest> _panggilanQueue = new Queue<PanggilanRequest>();
@@ -69,18 +70,29 @@ namespace SANTRI.Server
         {
             try
             {
-                int sisa = await _redisManager.GetSisaCountAsync();
-                lblLoketSisa.Text = sisa.ToString();
+                await UpdateSisaLabelAsync();
 
-                long num1 = await _redisManager.GetLoketNumberAsync(1);
-                long num2 = await _redisManager.GetLoketNumberAsync(2);
-                long num3 = await _redisManager.GetLoketNumberAsync(3);
-
-                lblLoket1Count.Text = num1 == 0 ? "000" : num1.ToString("D3");
-                lblLoket2Count.Text = num2 == 0 ? "000" : num2.ToString("D3");
-                lblLoket3Count.Text = num3 == 0 ? "000" : num3.ToString("D3");
+                lblLoket1Count.Text = await FormatLoketAsync(1);
+                lblLoket2Count.Text = await FormatLoketAsync(2);
+                lblLoket3Count.Text = await FormatLoketAsync(3);
             }
             catch { }
+        }
+
+        private async Task<string> FormatLoketAsync(int loketId)
+        {
+            long num = await _redisManager.GetLoketNumberAsync(loketId);
+            if (num == 0) return "---";
+            string jenis = await _redisManager.GetLoketJenisAsync(loketId);
+            return JenisAntrean.Format(jenis, num);
+        }
+
+        private async Task UpdateSisaLabelAsync()
+        {
+            int sisaUmum = await _redisManager.GetSisaCountAsync(JenisAntrean.Umum);
+            int sisaJKN = await _redisManager.GetSisaCountAsync(JenisAntrean.OnlineJKN);
+            int sisaHelp = await _redisManager.GetSisaCountAsync(JenisAntrean.Helpdesk);
+            lblLoketSisa.Text = $"A {sisaUmum} · B {sisaJKN} · C {sisaHelp}";
         }
 
         private void RedisManager_OnCommandReceived(string message)
@@ -98,18 +110,18 @@ namespace SANTRI.Server
                     int loketId = int.Parse(strSender);
                     long targetTicket = await _redisManager.GetLoketNumberAsync(loketId);
                     if (targetTicket == 0) return;
+                    string jenis = await _redisManager.GetLoketJenisAsync(loketId);
 
-                    int sisa = await _redisManager.GetSisaCountAsync();
-                    lblLoketSisa.Text = sisa.ToString();
+                    await UpdateSisaLabelAsync();
 
-                    // Perbarui TextBlock Loket spesifik sesuai format 3 digit
-                    string formattedTicket = targetTicket.ToString("D3");
+                    // Perbarui TextBlock Loket spesifik dengan format huruf-nomor
+                    string formattedTicket = JenisAntrean.Format(jenis, targetTicket);
                     if (loketId == 1) lblLoket1Count.Text = formattedTicket;
                     else if (loketId == 2) lblLoket2Count.Text = formattedTicket;
                     else if (loketId == 3) lblLoket3Count.Text = formattedTicket;
 
                     // === MASUKKAN PERMINTAAN SUARA KE ANTRIAN GLOBAL ===
-                    _panggilanQueue.Enqueue(new PanggilanRequest { TicketNumber = targetTicket, LoketId = loketId });
+                    _panggilanQueue.Enqueue(new PanggilanRequest { TicketNumber = targetTicket, LoketId = loketId, Jenis = jenis });
 
                     // Jika audio sedang menganggur, langsung eksekusi panggilan pertama
                     if (!_isPlayingAudio)
@@ -119,15 +131,14 @@ namespace SANTRI.Server
                 }
                 else if (command == "NEW_TICKET")
                 {
-                    int sisa = await _redisManager.GetSisaCountAsync();
-                    lblLoketSisa.Text = sisa.ToString();
+                    await UpdateSisaLabelAsync();
                 }
                 else if (command == "RESET")
                 {
-                    lblLoket1Count.Text = "000";
-                    lblLoket2Count.Text = "000";
-                    lblLoket3Count.Text = "000";
-                    lblLoketSisa.Text = "0";
+                    lblLoket1Count.Text = "---";
+                    lblLoket2Count.Text = "---";
+                    lblLoket3Count.Text = "---";
+                    lblLoketSisa.Text = "A 0 · B 0 · C 0";
                 }
             });
         }
@@ -142,7 +153,7 @@ namespace SANTRI.Server
                 var request = _panggilanQueue.Dequeue();
 
                 // Isi susunan file mp3 panggilannya
-                BuildAudioSequence(request.TicketNumber, request.LoketId);
+                BuildAudioSequence(request.TicketNumber, request.LoketId, request.Jenis);
             }
             else
             {
@@ -151,14 +162,16 @@ namespace SANTRI.Server
             }
         }
 
-        private void BuildAudioSequence(long ticketNumber, int loketId)
+        private void BuildAudioSequence(long ticketNumber, int loketId, string jenis)
         {
             _audioQueue.Clear();
 
             _audioQueue.Enqueue("tingtung.mp3");
             _audioQueue.Enqueue("nomor_antrian.mp3");
 
-            // Terjemahkan nomor tanpa embel-embel huruf
+            // Sebut huruf jenis antrean: a.mp3 / b.mp3 / c.mp3
+            _audioQueue.Enqueue($"{JenisAntrean.Huruf(jenis).ToLower()}.mp3");
+
             List<string> numberFiles = GetNumberAudioFiles((int)ticketNumber);
             foreach (string file in numberFiles) _audioQueue.Enqueue(file);
 

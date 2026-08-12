@@ -50,39 +50,50 @@ namespace SANTRI.Client
         {
             try
             {
-                // Ambil sisa antrean global dan status nomor terakhir khusus loket ini
-                int sisa = await _redisManager.GetSisaCountAsync();
+                int sisaUmum = await _redisManager.GetSisaCountAsync(JenisAntrean.Umum);
+                int sisaJKN = await _redisManager.GetSisaCountAsync(JenisAntrean.OnlineJKN);
+                int sisaHelp = await _redisManager.GetSisaCountAsync(JenisAntrean.Helpdesk);
+
                 long myCurrentNumber = await _redisManager.GetLoketNumberAsync(_myLoketId);
+                string myCurrentJenis = await _redisManager.GetLoketJenisAsync(_myLoketId);
 
-                lblSisa.Text = sisa.ToString();
-                lblCurrentCall.Text = myCurrentNumber == 0 ? "000" : myCurrentNumber.ToString("D3");
+                lblSisaUmum.Text = sisaUmum.ToString();
+                lblSisaJKN.Text = sisaJKN.ToString();
+                lblSisaHelp.Text = sisaHelp.ToString();
+                lblCurrentCall.Text = myCurrentNumber == 0 ? "---" : JenisAntrean.Format(myCurrentJenis, myCurrentNumber);
 
-                btnCall.IsEnabled = sisa > 0;
+                btnCallUmum.IsEnabled = sisaUmum > 0;
+                btnCallJKN.IsEnabled = sisaJKN > 0;
+                btnCallHelp.IsEnabled = sisaHelp > 0;
                 btnRecall.IsEnabled = myCurrentNumber > 0;
             }
             catch { }
         }
 
-        private async void btnCall_Click(object sender, RoutedEventArgs e)
+        private void btnCallUmum_Click(object sender, RoutedEventArgs e) => _ = PanggilAsync(JenisAntrean.Umum, btnCallUmum);
+        private void btnCallJKN_Click(object sender, RoutedEventArgs e) => _ = PanggilAsync(JenisAntrean.OnlineJKN, btnCallJKN);
+        private void btnCallHelp_Click(object sender, RoutedEventArgs e) => _ = PanggilAsync(JenisAntrean.Helpdesk, btnCallHelp);
+
+        private async Task PanggilAsync(string jenis, System.Windows.Controls.Button tombol)
         {
-            btnCall.IsEnabled = false;
+            tombol.IsEnabled = false;
 
             try
             {
-                int sisaSaatIni = await _redisManager.GetSisaCountAsync();
+                int sisaSaatIni = await _redisManager.GetSisaCountAsync(jenis);
                 if (sisaSaatIni <= 0) return;
 
-                // Ambil nomor antrean berikutnya dari Pool terpusat
-                long nextNumber = await _redisManager.IncrementActiveCountAsync();
+                // Ambil nomor antrean berikutnya dari Pool terpusat khusus jenis ini
+                long nextNumber = await _redisManager.IncrementActiveCountAsync(jenis);
 
                 // Update data loket spesifik dan kurangi sisa antrean
                 await _redisManager.SetLoketNumberAsync(_myLoketId, nextNumber);
+                await _redisManager.SetLoketJenisAsync(_myLoketId, jenis);
                 int sisaBaru = sisaSaatIni - 1;
-                await _redisManager.SetSisaCountAsync(sisaBaru);
+                await _redisManager.SetSisaCountAsync(jenis, sisaBaru);
 
-                // Update tampilan UI lokal langsung tanpa jeda (format 3 digit)
-                lblSisa.Text = sisaBaru.ToString();
-                lblCurrentCall.Text = nextNumber.ToString("D3");
+                // Update tampilan UI lokal langsung tanpa jeda
+                lblCurrentCall.Text = JenisAntrean.Format(jenis, nextNumber);
 
                 // Kirim perintah Pub/Sub dengan format: "ID_LOKET:CALL"
                 await _redisManager.PublishCommandAsync($"{_myLoketId}:CALL");
@@ -94,7 +105,7 @@ namespace SANTRI.Client
             finally
             {
                 await Task.Delay(1000);
-                btnCall.IsEnabled = true;
+                tombol.IsEnabled = true;
             }
         }
 
