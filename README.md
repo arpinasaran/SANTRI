@@ -14,30 +14,44 @@ sebagai pusat state & komunikasi antar-PC (pub/sub). Target produksi: **Windows*
 | `SANTRI.Setup` | Installer Windows: pasang Redis + salin aplikasi ke `C:\SANTRI` |
 | `MacPreview/` *(branch `mac-preview`)* | Port Avalonia **sementara** untuk preview GUI di macOS — bukan deliverable |
 
-## Fitur 3 Jenis Antrean
+## Fitur 4 Jenis Antrean
 
 Pasien memilih jenis antrean di Token, resepsionis memilih antrean yang dipanggil:
 
-- **A — Umum**
+- **A — Umum / Asuransi**
 - **B — Online JKN (BPJS)**
-- **C — Helpdesk**
+- **C — Onsite JKN (BPJS)**
+- **D — Helpdesk**
 
 Tiap jenis punya penomoran sendiri (format `A-012`). Sudah di-backport ke WPF asli
 (`SANTRI.Token/Client/Server`), status build lihat TODO di bawah.
 
 ## TODO
 
-- [ ] **Suara huruf antrean**: `b.mp3` & `c.mp3` di `SANTRI.Server/Audios` masih hasil
-      gTTS (suara Google) — beda karakter dengan rekaman manusia di file lama.
-      Opsi: (1) minta paket rekaman asli ke vendor/sumber audio lama (kemungkinan besar
-      paketnya sudah punya huruf A/B/C), atau (2) regenerate SEMUA audio dengan satu
-      suara TTS konsisten (Google Cloud TTS / Azure Neural id-ID / Prosa.ai).
-- [x] **Balikin ke Windows**: backport UI 3-jenis-antrean dari `MacPreview` ke WPF asli
+- [ ] **Kualitas suara huruf antrean**: `b.mp3`, `c.mp3`, `d.mp3` di
+      `SANTRI.Server/Audios` masih hasil TTS (SAPI `Microsoft Zira`, en-US) —
+      beda karakter dengan rekaman manusia di file lama, termasuk `a.mp3`.
+      Formatnya sudah disamakan (MP3 24 kHz mono 64 kbps) sehingga bisa
+      di-drop-in replace kapan saja tanpa ubah kode.
+      Opsi perbaikan: (1) minta paket rekaman asli ke vendor/sumber audio lama,
+      atau (2) regenerate SEMUA audio dengan satu suara TTS konsisten
+      (Google Cloud TTS / Azure Neural id-ID / Prosa.ai).
+- [x] **Balikin ke Windows**: backport UI jenis-antrean dari `MacPreview` ke WPF asli
       (`SANTRI.Core`, `SANTRI.Token/Client/Server` `MainWindow.xaml(.cs)`) selesai —
-      build sukses (`dotnet build`, termasuk kompilasi XAML, 0 error). **Belum
-      dicek di hardware asli**: cetak thermal, audio lewat speaker, penempatan
-      multi-monitor — perlu uji langsung di PC Windows dengan printer/TV terpasang.
+      build sukses (`dotnet build`, termasuk kompilasi XAML, 0 error). Verifikasi
+      runtime dengan Redis asli sudah dilakukan: penomoran per jenis terisolasi,
+      panggilan loket tersinkron ke display TV lewat pub/sub, keempat file audio
+      huruf terbaca WPF `MediaPlayer`. **Belum dicek di hardware asli**: cetak
+      thermal, audio lewat speaker, penempatan multi-monitor — perlu uji langsung
+      di PC Windows dengan printer/TV terpasang.
       Folder `MacPreview/` & branch `mac-preview` belum dihapus, menunggu konfirmasi.
+
+### Catatan operasional
+
+Jangan biarkan printer default PC kiosk berupa driver virtual (**Microsoft Print
+to PDF**, Fax, XPS). Driver semacam itu memunculkan dialog "Save Print Output As"
+yang memblokir UI thread `SANTRI.Token`, sehingga kiosk terlihat menggantung dan
+nomor antrean gagal tersimpan ke Redis. Set printer thermal sebagai default.
 
 ### Backlog (nanti, disengaja belum dikerjakan)
 

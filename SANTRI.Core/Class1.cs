@@ -4,23 +4,38 @@ using System.Threading.Tasks;
 
 namespace SANTRI.Core
 {
-    // Tiga jenis antrean: tiap jenis punya penomoran sendiri mulai 001
+    // Empat jenis antrean: tiap jenis punya penomoran sendiri mulai 001
     public static class JenisAntrean
     {
-        public const string Umum = "UMUM";      // huruf A
-        public const string OnlineJKN = "JKN";  // huruf B
-        public const string Helpdesk = "HELP";  // huruf C
+        public const string Umum = "UMUM";           // huruf A
+        public const string OnlineJKN = "JKN";       // huruf B
+        public const string OnsiteJKN = "JKNONSITE"; // huruf C
+        public const string Helpdesk = "HELP";       // huruf D
 
-        public static readonly string[] Semua = { Umum, OnlineJKN, Helpdesk };
+        public static readonly string[] Semua = { Umum, OnlineJKN, OnsiteJKN, Helpdesk };
 
         public static string Huruf(string jenis)
         {
-            return jenis == Umum ? "A" : jenis == OnlineJKN ? "B" : "C";
+            switch (jenis)
+            {
+                case Umum: return "A";
+                case OnlineJKN: return "B";
+                case OnsiteJKN: return "C";
+                case Helpdesk: return "D";
+                default: return "A";
+            }
         }
 
         public static string Label(string jenis)
         {
-            return jenis == Umum ? "Umum" : jenis == OnlineJKN ? "Online JKN" : "Helpdesk";
+            switch (jenis)
+            {
+                case Umum: return "Umum / Asuransi";
+                case OnlineJKN: return "Online JKN";
+                case OnsiteJKN: return "Onsite JKN";
+                case Helpdesk: return "Helpdesk";
+                default: return "Umum / Asuransi";
+            }
         }
 
         public static string Format(string jenis, long nomor)

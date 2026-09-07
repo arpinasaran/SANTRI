@@ -1,7 +1,7 @@
 ﻿<Window x:Class="SANTRI.Client.MainWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        Title="SANTRI.Client" Height="560" Width="500"
+        Title="SANTRI.Client" Height="625" Width="500"
         WindowStartupLocation="CenterScreen" Topmost="True" >
     <Window.Background>
         <ImageBrush ImageSource="/rsuwk_new.png" Stretch="UniformToFill" Opacity="0.5"/>
@@ -10,7 +10,7 @@
         <Grid.RowDefinitions>
             <RowDefinition Height="60"/>
             <RowDefinition Height="*"/>
-            <RowDefinition Height="200"/>
+            <RowDefinition Height="265"/>
             <RowDefinition Height="60"/>
             <RowDefinition Height="30"/>
         </Grid.RowDefinitions>
@@ -36,6 +36,8 @@
                 <RowDefinition/>
                 <RowDefinition Height="8"/>
                 <RowDefinition/>
+                <RowDefinition Height="8"/>
+                <RowDefinition/>
             </Grid.RowDefinitions>
 
             <Grid Grid.Row="0">
@@ -45,7 +47,7 @@
                 </Grid.ColumnDefinitions>
                 <Border Grid.Column="0" Background="#CCFFFFFF" CornerRadius="10" Padding="15,0" Margin="0,0,8,0">
                     <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
-                        <TextBlock Text="A — Umum" FontSize="16" FontWeight="Bold" Foreground="DarkGreen" VerticalAlignment="Center" Width="170"/>
+                        <TextBlock Text="A — Umum / Asuransi" FontSize="16" FontWeight="Bold" Foreground="DarkGreen" VerticalAlignment="Center" Width="170"/>
                         <TextBlock Text="Sisa: " FontSize="14" Foreground="Black" VerticalAlignment="Center"/>
                         <TextBlock x:Name="lblSisaUmum" Text="0" FontSize="18" FontWeight="Bold" Foreground="Red" VerticalAlignment="Center"/>
                     </StackPanel>
@@ -95,7 +97,32 @@
                 </Grid.ColumnDefinitions>
                 <Border Grid.Column="0" Background="#CCFFFFFF" CornerRadius="10" Padding="15,0" Margin="0,0,8,0">
                     <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
-                        <TextBlock Text="C — Helpdesk" FontSize="16" FontWeight="Bold" Foreground="#FF804F01" VerticalAlignment="Center" Width="170"/>
+                        <TextBlock Text="C — Onsite JKN" FontSize="16" FontWeight="Bold" Foreground="#FF4B01A0" VerticalAlignment="Center" Width="170"/>
+                        <TextBlock Text="Sisa: " FontSize="14" Foreground="Black" VerticalAlignment="Center"/>
+                        <TextBlock x:Name="lblSisaJKNOnsite" Text="0" FontSize="18" FontWeight="Bold" Foreground="Red" VerticalAlignment="Center"/>
+                    </StackPanel>
+                </Border>
+                <Button x:Name="btnCallJKNOnsite" Grid.Column="1" FontSize="14" FontWeight="Bold" Foreground="White" Click="btnCallJKNOnsite_Click">
+                    <TextBlock Text="PANGGIL" TextAlignment="Center"/>
+                    <Button.Resources>
+                        <Style TargetType="Border">
+                            <Setter Property="CornerRadius" Value="10"/>
+                        </Style>
+                    </Button.Resources>
+                    <Button.Background>
+                        <SolidColorBrush Color="#FF4B01A0"/>
+                    </Button.Background>
+                </Button>
+            </Grid>
+
+            <Grid Grid.Row="6">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="130"/>
+                </Grid.ColumnDefinitions>
+                <Border Grid.Column="0" Background="#CCFFFFFF" CornerRadius="10" Padding="15,0" Margin="0,0,8,0">
+                    <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                        <TextBlock Text="D — Helpdesk" FontSize="16" FontWeight="Bold" Foreground="#FF804F01" VerticalAlignment="Center" Width="170"/>
                         <TextBlock Text="Sisa: " FontSize="14" Foreground="Black" VerticalAlignment="Center"/>
                         <TextBlock x:Name="lblSisaHelp" Text="0" FontSize="18" FontWeight="Bold" Foreground="Red" VerticalAlignment="Center"/>
                     </StackPanel>

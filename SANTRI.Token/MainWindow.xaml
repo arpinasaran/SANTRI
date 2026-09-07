@@ -38,8 +38,8 @@
                 </TextBlock>
 
                 <Button x:Name="btnAmbilUmum"
-                        FontSize="30" FontWeight="Bold" Foreground="White"
-                        Width="600" Height="90" HorizontalAlignment="Center" Margin="0,0,0,15"
+                        FontSize="28" FontWeight="Bold" Foreground="White"
+                        Width="600" Height="80" HorizontalAlignment="Center" Margin="0,0,0,12"
                         Click="btnAmbilUmum_Click">
                     <Button.Resources>
                         <Style TargetType="Border">
@@ -52,12 +52,12 @@
                             <GradientStop Color="#FF0C4001" Offset="1"/>
                         </LinearGradientBrush>
                     </Button.Background>
-                    <TextBlock Text="A — UMUM" TextWrapping="Wrap" VerticalAlignment="Center" TextAlignment="Center"/>
+                    <TextBlock Text="A — UMUM / ASURANSI" TextWrapping="Wrap" VerticalAlignment="Center" TextAlignment="Center"/>
                 </Button>
 
                 <Button x:Name="btnAmbilJKN"
-                        FontSize="30" FontWeight="Bold" Foreground="White"
-                        Width="600" Height="90" HorizontalAlignment="Center" Margin="0,0,0,15"
+                        FontSize="28" FontWeight="Bold" Foreground="White"
+                        Width="600" Height="80" HorizontalAlignment="Center" Margin="0,0,0,12"
                         Click="btnAmbilJKN_Click">
                     <Button.Resources>
                         <Style TargetType="Border">
@@ -73,9 +73,27 @@
                     <TextBlock Text="B — ONLINE JKN (BPJS)" TextWrapping="Wrap" VerticalAlignment="Center" TextAlignment="Center"/>
                 </Button>
 
+                <Button x:Name="btnAmbilJKNOnsite"
+                        FontSize="28" FontWeight="Bold" Foreground="White"
+                        Width="600" Height="80" HorizontalAlignment="Center" Margin="0,0,0,12"
+                        Click="btnAmbilJKNOnsite_Click">
+                    <Button.Resources>
+                        <Style TargetType="Border">
+                            <Setter Property="CornerRadius" Value="20"/>
+                        </Style>
+                    </Button.Resources>
+                    <Button.Background>
+                        <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                            <GradientStop Color="#FF9B6BFF"/>
+                            <GradientStop Color="#FF2C0166" Offset="1"/>
+                        </LinearGradientBrush>
+                    </Button.Background>
+                    <TextBlock Text="C — ONSITE JKN (BPJS)" TextWrapping="Wrap" VerticalAlignment="Center" TextAlignment="Center"/>
+                </Button>
+
                 <Button x:Name="btnAmbilHelp"
-                        FontSize="30" FontWeight="Bold" Foreground="White"
-                        Width="600" Height="90" HorizontalAlignment="Center"
+                        FontSize="28" FontWeight="Bold" Foreground="White"
+                        Width="600" Height="80" HorizontalAlignment="Center"
                         Click="btnAmbilHelp_Click">
                     <Button.Resources>
                         <Style TargetType="Border">
@@ -88,13 +106,13 @@
                             <GradientStop Color="#FF804F01" Offset="1"/>
                         </LinearGradientBrush>
                     </Button.Background>
-                    <TextBlock Text="C — HELPDESK" TextWrapping="Wrap" VerticalAlignment="Center" TextAlignment="Center"/>
+                    <TextBlock Text="D — HELPDESK" TextWrapping="Wrap" VerticalAlignment="Center" TextAlignment="Center"/>
                 </Button>
 
-                <Border Background="#CC000000" CornerRadius="15" Padding="25,10" HorizontalAlignment="Center" Margin="0,30,0,0">
+                <Border Background="#CC000000" CornerRadius="15" Padding="25,10" HorizontalAlignment="Center" Margin="0,20,0,0">
                     <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
-                        <TextBlock Text="Total Hari Ini:" Foreground="White" FontSize="24" VerticalAlignment="Center"/>
-                        <TextBlock x:Name="lblTotalAntrean" Text="A 000 · B 000 · C 000" Foreground="Yellow" FontSize="28" FontWeight="Bold" VerticalAlignment="Center" Margin="15,0,0,0"/>
+                        <TextBlock Text="Total Hari Ini:" Foreground="White" FontSize="22" VerticalAlignment="Center"/>
+                        <TextBlock x:Name="lblTotalAntrean" Text="A 000 · B 000 · C 000 · D 000" Foreground="Yellow" FontSize="24" FontWeight="Bold" VerticalAlignment="Center" Margin="15,0,0,0"/>
                     </StackPanel>
                 </Border>
 

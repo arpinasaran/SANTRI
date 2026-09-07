@@ -61,7 +61,7 @@
             </GroupBox>
             <StackPanel Grid.Row="3" Orientation="Horizontal" HorizontalAlignment="Center" Margin="0,0,0,0">
                 <TextBlock Text="Sisa: " FontSize="26" VerticalAlignment="Center" Foreground="White"/>
-                <TextBlock x:Name="lblLoketSisa" Text="A 0 · B 0 · C 0" FontSize="30" FontWeight="Bold" Margin="0,0,0,0" Foreground="White"/>
+                <TextBlock x:Name="lblLoketSisa" Text="A 0 · B 0 · C 0 · D 0" FontSize="26" FontWeight="Bold" Margin="0,0,0,0" Foreground="White"/>
             </StackPanel>
         </Grid>
 

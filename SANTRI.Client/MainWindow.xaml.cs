@@ -52,6 +52,7 @@ namespace SANTRI.Client
             {
                 int sisaUmum = await _redisManager.GetSisaCountAsync(JenisAntrean.Umum);
                 int sisaJKN = await _redisManager.GetSisaCountAsync(JenisAntrean.OnlineJKN);
+                int sisaJKNOnsite = await _redisManager.GetSisaCountAsync(JenisAntrean.OnsiteJKN);
                 int sisaHelp = await _redisManager.GetSisaCountAsync(JenisAntrean.Helpdesk);
 
                 long myCurrentNumber = await _redisManager.GetLoketNumberAsync(_myLoketId);
@@ -59,11 +60,13 @@ namespace SANTRI.Client
 
                 lblSisaUmum.Text = sisaUmum.ToString();
                 lblSisaJKN.Text = sisaJKN.ToString();
+                lblSisaJKNOnsite.Text = sisaJKNOnsite.ToString();
                 lblSisaHelp.Text = sisaHelp.ToString();
                 lblCurrentCall.Text = myCurrentNumber == 0 ? "---" : JenisAntrean.Format(myCurrentJenis, myCurrentNumber);
 
                 btnCallUmum.IsEnabled = sisaUmum > 0;
                 btnCallJKN.IsEnabled = sisaJKN > 0;
+                btnCallJKNOnsite.IsEnabled = sisaJKNOnsite > 0;
                 btnCallHelp.IsEnabled = sisaHelp > 0;
                 btnRecall.IsEnabled = myCurrentNumber > 0;
             }
@@ -72,6 +75,7 @@ namespace SANTRI.Client
 
         private void btnCallUmum_Click(object sender, RoutedEventArgs e) => _ = PanggilAsync(JenisAntrean.Umum, btnCallUmum);
         private void btnCallJKN_Click(object sender, RoutedEventArgs e) => _ = PanggilAsync(JenisAntrean.OnlineJKN, btnCallJKN);
+        private void btnCallJKNOnsite_Click(object sender, RoutedEventArgs e) => _ = PanggilAsync(JenisAntrean.OnsiteJKN, btnCallJKNOnsite);
         private void btnCallHelp_Click(object sender, RoutedEventArgs e) => _ = PanggilAsync(JenisAntrean.Helpdesk, btnCallHelp);
 
         private async Task PanggilAsync(string jenis, System.Windows.Controls.Button tombol)

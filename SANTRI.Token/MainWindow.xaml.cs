@@ -28,6 +28,7 @@ namespace SANTRI.Token
         {
             { JenisAntrean.Umum, 0 },
             { JenisAntrean.OnlineJKN, 0 },
+            { JenisAntrean.OnsiteJKN, 0 },
             { JenisAntrean.Helpdesk, 0 }
         };
         private string _localFilePath = "lokal_tiket.txt";
@@ -92,6 +93,7 @@ namespace SANTRI.Token
 
         private void btnAmbilUmum_Click(object sender, RoutedEventArgs e) => _ = AmbilAntreanAsync(JenisAntrean.Umum);
         private void btnAmbilJKN_Click(object sender, RoutedEventArgs e) => _ = AmbilAntreanAsync(JenisAntrean.OnlineJKN);
+        private void btnAmbilJKNOnsite_Click(object sender, RoutedEventArgs e) => _ = AmbilAntreanAsync(JenisAntrean.OnsiteJKN);
         private void btnAmbilHelp_Click(object sender, RoutedEventArgs e) => _ = AmbilAntreanAsync(JenisAntrean.Helpdesk);
 
         private async Task AmbilAntreanAsync(string jenis)
@@ -123,6 +125,7 @@ namespace SANTRI.Token
         {
             btnAmbilUmum.IsEnabled = enabled;
             btnAmbilJKN.IsEnabled = enabled;
+            btnAmbilJKNOnsite.IsEnabled = enabled;
             btnAmbilHelp.IsEnabled = enabled;
         }
 
@@ -131,7 +134,8 @@ namespace SANTRI.Token
             lblTotalAntrean.Text =
                 $"A {_localTotals[JenisAntrean.Umum]:D3} · " +
                 $"B {_localTotals[JenisAntrean.OnlineJKN]:D3} · " +
-                $"C {_localTotals[JenisAntrean.Helpdesk]:D3}";
+                $"C {_localTotals[JenisAntrean.OnsiteJKN]:D3} · " +
+                $"D {_localTotals[JenisAntrean.Helpdesk]:D3}";
         }
 
         private void ResetLocalTotals()
@@ -302,7 +306,7 @@ namespace SANTRI.Token
             }
         }
 
-        // Format file: yyyy-MM-dd|totalUmum|totalJKN|totalHelp
+        // Format file: yyyy-MM-dd|totalUmum|totalJKN|totalJKNOnsite|totalHelp
         private void LoadLocalState()
         {
             try
@@ -310,11 +314,12 @@ namespace SANTRI.Token
                 if (File.Exists(_localFilePath))
                 {
                     string[] parts = File.ReadAllText(_localFilePath).Split('|');
-                    if (parts.Length == 4 && parts[0] == DateTime.Now.ToString("yyyy-MM-dd"))
+                    if (parts.Length == 5 && parts[0] == DateTime.Now.ToString("yyyy-MM-dd"))
                     {
                         _localTotals[JenisAntrean.Umum] = long.Parse(parts[1]);
                         _localTotals[JenisAntrean.OnlineJKN] = long.Parse(parts[2]);
-                        _localTotals[JenisAntrean.Helpdesk] = long.Parse(parts[3]);
+                        _localTotals[JenisAntrean.OnsiteJKN] = long.Parse(parts[3]);
+                        _localTotals[JenisAntrean.Helpdesk] = long.Parse(parts[4]);
                     }
                     else
                     {
@@ -333,7 +338,11 @@ namespace SANTRI.Token
             try
             {
                 File.WriteAllText(_localFilePath,
-                    $"{DateTime.Now:yyyy-MM-dd}|{_localTotals[JenisAntrean.Umum]}|{_localTotals[JenisAntrean.OnlineJKN]}|{_localTotals[JenisAntrean.Helpdesk]}");
+                    $"{DateTime.Now:yyyy-MM-dd}" +
+                    $"|{_localTotals[JenisAntrean.Umum]}" +
+                    $"|{_localTotals[JenisAntrean.OnlineJKN]}" +
+                    $"|{_localTotals[JenisAntrean.OnsiteJKN]}" +
+                    $"|{_localTotals[JenisAntrean.Helpdesk]}");
             }
             catch { }
         }

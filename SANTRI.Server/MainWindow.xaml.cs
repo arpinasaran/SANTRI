@@ -91,8 +91,9 @@ namespace SANTRI.Server
         {
             int sisaUmum = await _redisManager.GetSisaCountAsync(JenisAntrean.Umum);
             int sisaJKN = await _redisManager.GetSisaCountAsync(JenisAntrean.OnlineJKN);
+            int sisaJKNOnsite = await _redisManager.GetSisaCountAsync(JenisAntrean.OnsiteJKN);
             int sisaHelp = await _redisManager.GetSisaCountAsync(JenisAntrean.Helpdesk);
-            lblLoketSisa.Text = $"A {sisaUmum} · B {sisaJKN} · C {sisaHelp}";
+            lblLoketSisa.Text = $"A {sisaUmum} · B {sisaJKN} · C {sisaJKNOnsite} · D {sisaHelp}";
         }
 
         private void RedisManager_OnCommandReceived(string message)
@@ -138,7 +139,7 @@ namespace SANTRI.Server
                     lblLoket1Count.Text = "---";
                     lblLoket2Count.Text = "---";
                     lblLoket3Count.Text = "---";
-                    lblLoketSisa.Text = "A 0 · B 0 · C 0";
+                    lblLoketSisa.Text = "A 0 · B 0 · C 0 · D 0";
                 }
             });
         }
@@ -169,7 +170,7 @@ namespace SANTRI.Server
             _audioQueue.Enqueue("tingtung.mp3");
             _audioQueue.Enqueue("nomor_antrian.mp3");
 
-            // Sebut huruf jenis antrean: a.mp3 / b.mp3 / c.mp3
+            // Sebut huruf jenis antrean: a.mp3 / b.mp3 / c.mp3 / d.mp3
             _audioQueue.Enqueue($"{JenisAntrean.Huruf(jenis).ToLower()}.mp3");
 
             List<string> numberFiles = GetNumberAudioFiles((int)ticketNumber);
