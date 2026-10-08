@@ -28,16 +28,23 @@ Tiap jenis punya penomoran sendiri (format `A-012`). Sudah di-backport ke WPF as
 
 ## TODO
 
-- [ ] **Kualitas suara huruf antrean**: `b.mp3`, `c.mp3`, `d.mp3` di
-      `SANTRI.Server/Audios` sudah berpelafalan Indonesia ("be", "ce", "de")
-      via gTTS `tl=id`, bukan lagi SAPI `Microsoft Zira` (en-US) yang terdengar
-      "bee/see/dee". Spesifikasi disamakan ke `a.mp3` (MP3 24 kHz mono 64 kbps)
-      dan puncak volume dinormalkan ke −5,5 dB seperti `a.mp3`, jadi bisa
-      di-drop-in replace kapan saja tanpa ubah kode.
-      Sisa pekerjaan: karakter suaranya masih TTS, beda dari rekaman manusia di
-      file lama. Opsi: (1) minta paket rekaman asli ke vendor/sumber audio lama,
-      atau (2) regenerate SEMUA audio dengan satu suara TTS konsisten
+- [ ] **Kualitas suara huruf antrean**: keempat file huruf (`a.mp3`, `b.mp3`,
+      `c.mp3`, `d.mp3` di `SANTRI.Server/Audios`) sekarang berasal dari satu
+      sumber yang sama — gTTS `tl=id` dengan input "a"/"be"/"ce"/"de" — jadi
+      pelafalannya Indonesia dan karakter suaranya seragam antar huruf.
+      Sebelumnya `a.mp3` rekaman manusia sementara B/C/D hasil SAPI
+      `Microsoft Zira` (en-US) yang terdengar "bee/see/dee". Semua dinormalkan
+      ke MP3 24 kHz mono 64 kbps dengan puncak volume sekitar -6 dB, sehingga
+      bisa di-drop-in replace kapan saja tanpa ubah kode.
+      Sisa pekerjaan: huruf-hurufnya kini seragam satu sama lain, tapi masih
+      bersuara TTS sedangkan angka dan frasa di sekitarnya (`nomor_antrian.mp3`,
+      `1.mp3` dst, `silakan_menuju_ke_loket.mp3`) tetap rekaman manusia — jadi
+      dalam satu kalimat panggilan masih terdengar dua karakter suara.
+      Opsi: (1) minta paket rekaman asli ke vendor/sumber audio lama, atau
+      (2) regenerate SEMUA audio dengan satu suara TTS konsisten
       (Google Cloud TTS / Azure Neural id-ID / Prosa.ai).
+      Rekaman manusia `a.mp3` yang lama masih tersimpan di riwayat git pada
+      commit `5d152e6` bila suatu saat mau dikembalikan.
 - [x] **Balikin ke Windows**: backport UI jenis-antrean dari `MacPreview` ke WPF asli
       (`SANTRI.Core`, `SANTRI.Token/Client/Server` `MainWindow.xaml(.cs)`) selesai —
       build sukses (`dotnet build`, termasuk kompilasi XAML, 0 error). Verifikasi
