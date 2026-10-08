@@ -29,11 +29,13 @@ Tiap jenis punya penomoran sendiri (format `A-012`). Sudah di-backport ke WPF as
 ## TODO
 
 - [ ] **Kualitas suara huruf antrean**: `b.mp3`, `c.mp3`, `d.mp3` di
-      `SANTRI.Server/Audios` masih hasil TTS (SAPI `Microsoft Zira`, en-US) —
-      beda karakter dengan rekaman manusia di file lama, termasuk `a.mp3`.
-      Formatnya sudah disamakan (MP3 24 kHz mono 64 kbps) sehingga bisa
+      `SANTRI.Server/Audios` sudah berpelafalan Indonesia ("be", "ce", "de")
+      via gTTS `tl=id`, bukan lagi SAPI `Microsoft Zira` (en-US) yang terdengar
+      "bee/see/dee". Spesifikasi disamakan ke `a.mp3` (MP3 24 kHz mono 64 kbps)
+      dan puncak volume dinormalkan ke −5,5 dB seperti `a.mp3`, jadi bisa
       di-drop-in replace kapan saja tanpa ubah kode.
-      Opsi perbaikan: (1) minta paket rekaman asli ke vendor/sumber audio lama,
+      Sisa pekerjaan: karakter suaranya masih TTS, beda dari rekaman manusia di
+      file lama. Opsi: (1) minta paket rekaman asli ke vendor/sumber audio lama,
       atau (2) regenerate SEMUA audio dengan satu suara TTS konsisten
       (Google Cloud TTS / Azure Neural id-ID / Prosa.ai).
 - [x] **Balikin ke Windows**: backport UI jenis-antrean dari `MacPreview` ke WPF asli
@@ -52,6 +54,23 @@ Jangan biarkan printer default PC kiosk berupa driver virtual (**Microsoft Print
 to PDF**, Fax, XPS). Driver semacam itu memunculkan dialog "Save Print Output As"
 yang memblokir UI thread `SANTRI.Token`, sehingga kiosk terlihat menggantung dan
 nomor antrean gagal tersimpan ke Redis. Set printer thermal sebagai default.
+
+### Build tanpa Visual Studio
+
+Repo ini **sengaja tidak memuat `Directory.Build.props`**. File tersebut pernah
+ada untuk menarik reference assemblies net472 dari NuGet supaya `dotnet build`
+jalan di mesin tanpa Visual Studio, tapi efek sampingnya merusak PC yang justru
+punya Visual Studio: satu `PackageReference` saja membuat NuGet menganggap
+`SANTRI.Core` bergaya PackageReference, sehingga **15 paket di
+`SANTRI.Core/packages.config` (termasuk `StackExchange.Redis`) tidak di-restore**
+dan build gagal dengan `CS0246: The type or namespace name 'StackExchange'
+could not be found`. Di clone baru (folder `packages/` masuk `.gitignore`) ini
+pasti terjadi.
+
+Jadi: PC dengan Visual Studio cukup buka `SANTRI.slnx` dan build seperti biasa.
+Untuk build di mesin tanpa Visual Studio, pakai proyek shim SDK-style **di luar
+repo** yang me-`Compile Include`/`Page Include` file sumber ini lewat path
+relatif — tidak ada file yang di-track git yang perlu diubah.
 
 ### Backlog (nanti, disengaja belum dikerjakan)
 

@@ -1,7 +1,0 @@
-<Project>
-  <!-- Memungkinkan `dotnet build` mengompilasi proyek .NET Framework 4.7.2
-       tanpa Visual Studio terinstal (reference assemblies via NuGet). -->
-  <ItemGroup Condition="'$(TargetFrameworkVersion)' != ''">
-    <PackageReference Include="Microsoft.NETFramework.ReferenceAssemblies" Version="1.0.3" PrivateAssets="All" />
-  </ItemGroup>
-</Project>
