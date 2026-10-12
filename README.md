@@ -3,6 +3,20 @@
 Sistem antrean pendaftaran berbasis **C# WPF (.NET Framework 4.7.2)** dengan **Redis**
 sebagai pusat state & komunikasi antar-PC (pub/sub). Target produksi: **Windows**.
 
+## Menjalankan di Windows
+
+Untuk mencoba aplikasi dari source di satu PC:
+
+1. Siapkan Visual Studio dengan **.NET desktop development** dan **.NET Framework 4.7.2 Developer Pack**.
+2. Jalankan Redis di `127.0.0.1:6379`. Jika belum terpasang, installer Redis ada di `SANTRI.Setup/Prerequisites/Redis-x64.msi`.
+3. Buka `SANTRI.slnx`, pilih **Debug | x64**, lalu buka **Build > Configuration Manager**. Hilangkan centang **Build** untuk `SANTRI.Setup` karena folder `Payloads` installer dibuat terpisah. Setelah itu pilih **Build Solution**.
+4. Klik kanan solution, buka **Configure Startup Projects**, pilih **Multiple startup projects**, lalu set `SANTRI.Server`, `SANTRI.Token`, dan `SANTRI.Client` ke **Start**. Tekan **F5**.
+5. Ambil nomor di **Token**, klik **Panggil** di **Client**, lalu lihat nomor dan dengarkan panggilannya di **Server**.
+
+Sebelum mengambil nomor, jadikan printer thermal sebagai printer default. Driver seperti **Microsoft Print to PDF** membuka dialog simpan dan membuat kiosk tampak macet.
+
+Setiap aplikasi membuat `Config.txt` di folder hasil build saat pertama kali dijalankan. Nilai awalnya `REDIS_CONNECTION=127.0.0.1:6379` dan `LOKET_ID=1`. Ubah alamat Redis jika memakai beberapa PC, dan ubah `LOKET_ID` pada Client untuk loket 2 atau 3. Jika hanya ingin mendengar bunyi huruf antrean, putar `a.mp3` sampai `d.mp3` di `SANTRI.Server/Audios`.
+
 ## Komponen
 
 | Proyek | Peran |
