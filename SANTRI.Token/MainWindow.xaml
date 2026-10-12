@@ -52,7 +52,7 @@
                             <GradientStop Color="#FF0C4001" Offset="1"/>
                         </LinearGradientBrush>
                     </Button.Background>
-                    <TextBlock Text="A — UMUM / ASURANSI" TextWrapping="Wrap" VerticalAlignment="Center" TextAlignment="Center"/>
+                    <TextBlock Text="A. UMUM / ASURANSI" TextWrapping="Wrap" VerticalAlignment="Center" TextAlignment="Center"/>
                 </Button>
 
                 <Button x:Name="btnAmbilJKN"
@@ -70,7 +70,7 @@
                             <GradientStop Color="#FF013F66" Offset="1"/>
                         </LinearGradientBrush>
                     </Button.Background>
-                    <TextBlock Text="B — ONLINE JKN (BPJS)" TextWrapping="Wrap" VerticalAlignment="Center" TextAlignment="Center"/>
+                    <TextBlock Text="B. ONLINE JKN (BPJS)" TextWrapping="Wrap" VerticalAlignment="Center" TextAlignment="Center"/>
                 </Button>
 
                 <Button x:Name="btnAmbilJKNOnsite"
@@ -88,7 +88,7 @@
                             <GradientStop Color="#FF2C0166" Offset="1"/>
                         </LinearGradientBrush>
                     </Button.Background>
-                    <TextBlock Text="C — ONSITE JKN (BPJS)" TextWrapping="Wrap" VerticalAlignment="Center" TextAlignment="Center"/>
+                    <TextBlock Text="C. ONSITE JKN (BPJS)" TextWrapping="Wrap" VerticalAlignment="Center" TextAlignment="Center"/>
                 </Button>
 
                 <Button x:Name="btnAmbilHelp"
@@ -106,7 +106,7 @@
                             <GradientStop Color="#FF804F01" Offset="1"/>
                         </LinearGradientBrush>
                     </Button.Background>
-                    <TextBlock Text="D — HELPDESK" TextWrapping="Wrap" VerticalAlignment="Center" TextAlignment="Center"/>
+                    <TextBlock Text="D. HELPDESK" TextWrapping="Wrap" VerticalAlignment="Center" TextAlignment="Center"/>
                 </Button>
 
                 <Border Background="#CC000000" CornerRadius="15" Padding="25,10" HorizontalAlignment="Center" Margin="0,20,0,0">

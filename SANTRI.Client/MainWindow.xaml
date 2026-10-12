@@ -47,7 +47,7 @@
                 </Grid.ColumnDefinitions>
                 <Border Grid.Column="0" Background="#CCFFFFFF" CornerRadius="10" Padding="15,0" Margin="0,0,8,0">
                     <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
-                        <TextBlock Text="A — Umum / Asuransi" FontSize="16" FontWeight="Bold" Foreground="DarkGreen" VerticalAlignment="Center" Width="170"/>
+                        <TextBlock Text="A. Umum / Asuransi" FontSize="16" FontWeight="Bold" Foreground="DarkGreen" VerticalAlignment="Center" Width="170"/>
                         <TextBlock Text="Sisa: " FontSize="14" Foreground="Black" VerticalAlignment="Center"/>
                         <TextBlock x:Name="lblSisaUmum" Text="0" FontSize="18" FontWeight="Bold" Foreground="Red" VerticalAlignment="Center"/>
                     </StackPanel>
@@ -72,7 +72,7 @@
                 </Grid.ColumnDefinitions>
                 <Border Grid.Column="0" Background="#CCFFFFFF" CornerRadius="10" Padding="15,0" Margin="0,0,8,0">
                     <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
-                        <TextBlock Text="B — Online JKN" FontSize="16" FontWeight="Bold" Foreground="DarkBlue" VerticalAlignment="Center" Width="170"/>
+                        <TextBlock Text="B. Online JKN" FontSize="16" FontWeight="Bold" Foreground="DarkBlue" VerticalAlignment="Center" Width="170"/>
                         <TextBlock Text="Sisa: " FontSize="14" Foreground="Black" VerticalAlignment="Center"/>
                         <TextBlock x:Name="lblSisaJKN" Text="0" FontSize="18" FontWeight="Bold" Foreground="Red" VerticalAlignment="Center"/>
                     </StackPanel>
@@ -97,7 +97,7 @@
                 </Grid.ColumnDefinitions>
                 <Border Grid.Column="0" Background="#CCFFFFFF" CornerRadius="10" Padding="15,0" Margin="0,0,8,0">
                     <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
-                        <TextBlock Text="C — Onsite JKN" FontSize="16" FontWeight="Bold" Foreground="#FF4B01A0" VerticalAlignment="Center" Width="170"/>
+                        <TextBlock Text="C. Onsite JKN" FontSize="16" FontWeight="Bold" Foreground="#FF4B01A0" VerticalAlignment="Center" Width="170"/>
                         <TextBlock Text="Sisa: " FontSize="14" Foreground="Black" VerticalAlignment="Center"/>
                         <TextBlock x:Name="lblSisaJKNOnsite" Text="0" FontSize="18" FontWeight="Bold" Foreground="Red" VerticalAlignment="Center"/>
                     </StackPanel>
@@ -122,7 +122,7 @@
                 </Grid.ColumnDefinitions>
                 <Border Grid.Column="0" Background="#CCFFFFFF" CornerRadius="10" Padding="15,0" Margin="0,0,8,0">
                     <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
-                        <TextBlock Text="D — Helpdesk" FontSize="16" FontWeight="Bold" Foreground="#FF804F01" VerticalAlignment="Center" Width="170"/>
+                        <TextBlock Text="D. Helpdesk" FontSize="16" FontWeight="Bold" Foreground="#FF804F01" VerticalAlignment="Center" Width="170"/>
                         <TextBlock Text="Sisa: " FontSize="14" Foreground="Black" VerticalAlignment="Center"/>
                         <TextBlock x:Name="lblSisaHelp" Text="0" FontSize="18" FontWeight="Bold" Foreground="Red" VerticalAlignment="Center"/>
                     </StackPanel>

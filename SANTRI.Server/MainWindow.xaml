@@ -23,7 +23,8 @@
         </Grid.ColumnDefinitions>
 
         <Border Grid.Row="0" Background="#99000000" Grid.ColumnSpan="3" Visibility="Visible">
-            <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+            <Viewbox StretchDirection="DownOnly">
+            <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Height="150">
                 <Image Source="/logo.png" Margin="30,10" />
                 <Grid VerticalAlignment="Center" >
                     <TextBlock Text="RSU Wijayakusuma Kebumen" Foreground="Green" FontSize="70" FontWeight="Bold" HorizontalAlignment="Center">
@@ -33,6 +34,7 @@
                     </TextBlock>
                 </Grid>
             </StackPanel>
+            </Viewbox>
         </Border>
 
         <Image Source="/logo.png" Margin="0,0" VerticalAlignment="Center" HorizontalAlignment="Center" Grid.ColumnSpan="3" Grid.RowSpan="3" Width="300" Opacity="0.5" Visibility="Collapsed"/>
@@ -45,27 +47,29 @@
                 <RowDefinition Height="60"/>
             </Grid.RowDefinitions>
             <GroupBox Grid.Row="0" Header="   Loket 1   " FontSize="40" Foreground="White" Padding="0" Margin="30,10,30,10">
-                <StackPanel Margin="0,0">
+                <Viewbox StretchDirection="DownOnly">
                     <TextBlock x:Name="lblLoket1Count" Text="---" FontSize="85" FontWeight="Bold" Foreground="Orange" HorizontalAlignment="Center"/>
-                </StackPanel>
+                </Viewbox>
             </GroupBox>
             <GroupBox Grid.Row="1" Header="   Loket 2   " FontSize="40" Foreground="White" Padding="0" Margin="30,0,30,10">
-                <StackPanel Margin="0,0">
+                <Viewbox StretchDirection="DownOnly">
                     <TextBlock x:Name="lblLoket2Count" Text="---" FontSize="85" FontWeight="Bold" Foreground="Orange" HorizontalAlignment="Center"/>
-                </StackPanel>
+                </Viewbox>
             </GroupBox>
             <GroupBox Grid.Row="2" Header="   Loket 3   " FontSize="40" Foreground="White" Padding="0" Margin="30,0,30,10">
-                <StackPanel Margin="0,0">
+                <Viewbox StretchDirection="DownOnly">
                     <TextBlock x:Name="lblLoket3Count" Text="---" FontSize="85" FontWeight="Bold" Foreground="Orange" HorizontalAlignment="Center"/>
-                </StackPanel>
+                </Viewbox>
             </GroupBox>
-            <StackPanel Grid.Row="3" Orientation="Horizontal" HorizontalAlignment="Center" Margin="0,0,0,0">
+            <Viewbox Grid.Row="3" StretchDirection="DownOnly" Margin="10,0">
+            <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Margin="0,0,0,0">
                 <TextBlock Text="Sisa: " FontSize="26" VerticalAlignment="Center" Foreground="White"/>
-                <TextBlock x:Name="lblLoketSisa" Text="A 0 · B 0 · C 0 · D 0" FontSize="26" FontWeight="Bold" Margin="0,0,0,0" Foreground="White"/>
+                <TextBlock x:Name="lblLoketSisa" Text="A 0 · B 0 · C 0 · D 0" FontSize="26" FontWeight="Bold" VerticalAlignment="Center" Margin="0,0,0,0" Foreground="White"/>
             </StackPanel>
+            </Viewbox>
         </Grid>
 
-        <Grid Grid.Row="1" Grid.Column="1" Grid.ColumnSpan="2" Background="#B2C0C0C0" Margin="150,100">
+        <Grid x:Name="videoPanel" Grid.Row="1" Grid.Column="1" Grid.ColumnSpan="2" Background="#B2C0C0C0" Margin="150,100">
             <MediaElement x:Name="videoPlayer" LoadedBehavior="Manual" UnloadedBehavior="Stop" MediaEnded="VideoPlayer_MediaEnded" Visibility="Visible" Volume="0"/>
         </Grid>
 

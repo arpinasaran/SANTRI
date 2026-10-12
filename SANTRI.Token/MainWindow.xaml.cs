@@ -106,7 +106,7 @@ namespace SANTRI.Token
             _jenisYangDicetak = jenis;
             _tiketYangDicetak = JenisAntrean.Format(jenis, _localTotals[jenis]);
 
-            lblJenisCetak.Text = $"Antrian {JenisAntrean.Label(jenis)} — Nomor Anda:";
+            lblJenisCetak.Text = $"Antrian {JenisAntrean.Label(jenis)}. Nomor Anda:";
             lblNomorCetak.Text = _tiketYangDicetak;
             UpdateTotalLabel();
 

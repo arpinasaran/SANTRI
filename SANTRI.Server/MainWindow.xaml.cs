@@ -246,7 +246,7 @@ namespace SANTRI.Server
             if (lblMarque.ActualWidth == 0 || this.ActualWidth == 0) return;
 
             textAnimation = new DoubleAnimation();
-            textAnimation.From = this.Width;
+            textAnimation.From = this.ActualWidth;
             textAnimation.To = -lblMarque.ActualWidth - 500;
             textAnimation.RepeatBehavior = RepeatBehavior.Forever;
             textAnimation.Duration = new Duration(TimeSpan.FromSeconds(50));
@@ -277,7 +277,11 @@ namespace SANTRI.Server
         private void PlayNextVideo()
         {
             // Jika tidak ada video di dalam folder, hentikan proses
-            if (_playlist.Count == 0) return;
+            if (_playlist.Count == 0)
+            {
+                videoPanel.Visibility = Visibility.Collapsed;
+                return;
+            }
 
             // Jika index sudah mencapai batas akhir playlist, kembalikan ke 0 (Looping ke awal)
             if (_currentVideoIndex >= _playlist.Count)
