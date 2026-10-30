@@ -188,6 +188,10 @@ namespace SANTRI.Token
 
         private void CetakTiket()
         {
+            // Paket demo satu PC tidak memerlukan printer tiket.
+            if (IsDemoMode())
+                return;
+
             try
             {
                 PrintDocument pd = new PrintDocument();
@@ -309,6 +313,8 @@ namespace SANTRI.Token
         // Format file: yyyy-MM-dd|totalUmum|totalJKN|totalJKNOnsite|totalHelp
         private void LoadLocalState()
         {
+            if (IsDemoMode()) return;
+
             try
             {
                 if (File.Exists(_localFilePath))
@@ -335,6 +341,8 @@ namespace SANTRI.Token
 
         private void SaveLocalState()
         {
+            if (IsDemoMode()) return;
+
             try
             {
                 File.WriteAllText(_localFilePath,
@@ -345,6 +353,11 @@ namespace SANTRI.Token
                     $"|{_localTotals[JenisAntrean.Helpdesk]}");
             }
             catch { }
+        }
+
+        private static bool IsDemoMode()
+        {
+            return Environment.GetEnvironmentVariable("SANTRI_DEMO_MODE") == "1";
         }
 
 
